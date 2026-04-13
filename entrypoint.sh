@@ -85,13 +85,13 @@ if [ ! -f "$BOOT_CONF" ] || [ "$FINGERPRINT" != "$OLD_FINGERPRINT" ] || [ "$FORC
 	cp "$TEMPLATE" "$BOOT_CONF"
 	sed -i "s/{SSH_USER}/$USER_NAME/g" "$BOOT_CONF"
 
-	sed -i "s/{TTYD_PORT}/$TTYD_PORT/g" "$BOOT_CONF"
-
 	if [ -n "$TTYD" ]; then
 		sed -i "s/{TTYD_AUTH}/-c $TTYD/g" "$BOOT_CONF"
 	else
 		sed -i "s/{TTYD_AUTH}//g" "$BOOT_CONF"
 	fi
+
+	sed -i "s/{TTYD_PORT}/$TTYD_PORT/g" "$BOOT_CONF"
 
 	if [ -z "$CF_TOKEN" ]; then
 		sed -i '/\[program:cloudflared\]/,/stdout_logfile/s/^/;/' "$BOOT_CONF"
