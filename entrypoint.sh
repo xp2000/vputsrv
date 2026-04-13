@@ -92,19 +92,17 @@ else
 	sed -i '/\[program:cloudflared\]/,/stdout_logfile/s/^;//' "$BOOT_CONF"
 fi
 
-# --- 5.5 处理 ttyd 动态密码 (由环境变量 TTYD 控制) ---
 if [ -n "$TTYD" ]; then
 	echo "🔐 检测到 TTYD 变量 ($TTYD)，正在开启 Web 终端密码保护..."
-	sed -i "s|/usr/local/bin/ttyd -W bash|/usr/local/bin/ttyd -c $TTYD -W bash|g" "$BOOT_CONF"
+	sed -i "s|-W bash|-c $TTYD -W bash|g" "$BOOT_CONF"
 else
 	echo "🔓 未检测到 TTYD 变量，Web 终端将保持无密码模式。"
 fi
 
 TTYD_PORT=${TTYD_PORT:-7681}
-echo "📡 Web 终端端口: $TTYD_PORT"
-sed -i "s|-p 7681|-p $TTYD_PORT|g" "$BOOT_CONF"
-
 if [ "$TTYD_PORT" != "7681" ]; then
+	echo "📡 检测到 TTYD_PORT 变量 ($TTYD_PORT)，正在设置 Web 终端监听端口..."
+	sed -i "s|-p 7681|-p $TTYD_PORT|g" "$BOOT_CONF"
 	echo "⚠️ 请使用以下命令运行容器："
 	echo "   docker run -e TTYD_PORT=$TTYD_PORT -p 2222:22 -p $TTYD_PORT:$TTYD_PORT ..."
 fi
