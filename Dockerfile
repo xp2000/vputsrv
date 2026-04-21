@@ -4,8 +4,7 @@ FROM ubuntu:22.04
 ENV DEBIAN_FRONTEND=noninteractive \
     TZ=Asia/Shanghai \
     SSH_USER=zv \
-    SSH_PWD=105106 \
-    SSH_PORT=${SSH_PORT}
+    SSH_PWD=105106
 
 # 2. 安装必要软件包
 RUN apt-get update && apt-get install -y \
@@ -24,9 +23,9 @@ RUN curl -L --output cloudflared.deb https://github.com/cloudflare/cloudflared/r
 RUN mkdir -p /run/sshd && ssh-keygen -A \
     && sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config \
     && sed -i 's/#PasswordAuthentication yes/PasswordAuthentication yes/' /etc/ssh/sshd_config \
-    && sed -i 's/^#\?Port 22/Port ${SSH_PORT}/' /etc/ssh/sshd_config
+    && sed -i 's/^#\?Port 22/Port 51262/' /etc/ssh/sshd_config
 
-EXPOSE ${SSH_PORT}
+EXPOSE 51262
 
 # 5. 配置文件与脚本处理
 RUN mkdir -p /usr/local/etc
