@@ -22,7 +22,8 @@ RUN curl -L --output cloudflared.deb https://github.com/cloudflare/cloudflared/r
 # 4. SSH 环境预处理
 RUN mkdir -p /run/sshd && ssh-keygen -A \
     && sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config \
-    && sed -i 's/#PasswordAuthentication yes/PasswordAuthentication yes/' /etc/ssh/sshd_config 
+    && sed -i 's/#PasswordAuthentication yes/PasswordAuthentication yes/' /etc/ssh/sshd_config \
+    && sed -i 's/^#\?Port 22/Port 51262/' /etc/ssh/sshd_config
 
 EXPOSE 51262
 
