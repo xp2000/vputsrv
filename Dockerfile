@@ -24,7 +24,7 @@ RUN mkdir -p /run/sshd && ssh-keygen -A \
     && sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config \
     && sed -i 's/#PasswordAuthentication yes/PasswordAuthentication yes/' /etc/ssh/sshd_config 
 
-EXPOSE 51262
+EXPOSE 51260
 
 # 5. 配置文件与脚本处理
 RUN mkdir -p /usr/local/etc
